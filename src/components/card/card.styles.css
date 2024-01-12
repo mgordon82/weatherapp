@@ -1,0 +1,12 @@
+.card {
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 5px;
+  width: 200px;
+  flex: flex;
+  &:hover {
+    background-color: #06573b;
+    color: #fff;
+    cursor: pointer;
+  }
+}
