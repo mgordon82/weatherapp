@@ -1,0 +1,17 @@
+.local-card {
+  display: flex;
+  align-items: top;
+  column-gap: 20px;
+
+  h2 {
+    font-size: 1.2em;
+    margin: 0;
+  }
+  p {
+    font-size: 0.9em;
+    margin: 0;
+  }
+  img {
+    height: 50px;
+  }
+}
