@@ -1,14 +1,9 @@
-import Skeleton from 'react-loading-skeleton';
-
 const TempAndDescription = ({ data }) => {
   const { icon, text, temp, tempC, feelsLikeTemp, feelsLikeTempC } = data;
   return (
     <div style={{ display: 'flex', columnGap: 15, alignItems: 'top' }}>
-      {icon ? (
-        <img src={icon && icon} alt={`${text}-conditions`} />
-      ) : (
-        <Skeleton style={{ width: 86, height: 86 }} />
-      )}
+      <img src={icon && icon} alt={`${text}-conditions`} />
+
       <div>
         <p>{text}</p>
         <p style={{ fontSize: '2em', fontWeight: 'bold' }}>
