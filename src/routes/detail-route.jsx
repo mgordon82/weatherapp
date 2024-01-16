@@ -1,71 +1,98 @@
-import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import celsiusToFahrenheit from '../utils/celsiusToFahrenheit';
-import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import TempAndDescription from '../components/locationDetails/tempAndDescription.component';
+import round from '../utils/round';
+import ForecastDetails from '../components/forecast/forecast.component';
 
 const Details = () => {
   const location = useLocation();
-  const data = location.state ? location.state.data : null;
-  const [locationData, setLocationData] = useState({
-    dewpoint: {},
-    windChill: {},
-    temperature: {},
-    visibility: {},
-    relativeHumidity: {},
-  });
-  console.log('detail data', data);
-
-  useEffect(() => {
-    if (data) {
-      fetch(`${data.properties.forecast}/observations`)
-        .then((response) => response.json())
-        .then((forecast) => setLocationData(forecast.features[0].properties));
-    }
-  }, [data]);
-  const { name } = data.properties;
+  const localData = location.state.data.query;
+  const { name, region, localtime, tz_id } = localData.location;
   const {
-    icon,
-    textDescription,
-    dewpoint,
-    windChill,
-    temperature,
-    visibility,
-    relativeHumidity,
-  } = locationData;
-  console.log('location data', locationData);
+    condition,
+    feelslike_f,
+    feelslike_c,
+    gust_mph,
+    humidity,
+    last_updated,
+    precip_in,
+    temp_f,
+    temp_c,
+    vis_miles,
+    wind_mph,
+    wind_dir,
+    uv,
+  } = localData.current;
+
   return (
     <div>
-      <h2>Details for {name}</h2>
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
+          alignItems: 'top',
+          padding: '15px 0',
+        }}
+      >
+        <h2 style={{ margin: 0 }}>
+          <p style={{ fontWeight: 'normal', fontSize: '0.7em', margin: 0 }}>
+            Current Conditions in:
+          </p>{' '}
+          {name}, {region}
+        </h2>
+        <div style={{ fontSize: '0.9em' }}>
+          <p style={{ margin: 0 }}>Local Time: {localtime}</p>
+          <p style={{ margin: 0 }}>Timezone: {tz_id}</p>
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
           border: '1px solid #ccc',
           borderRadius: 5,
           padding: '15px 10px',
         }}
       >
-        <div style={{ display: 'flex', columnGap: 15, alignItems: 'top' }}>
-          {icon ? (
-            <img
-              src={icon && icon}
-              alt={`${textDescription}-conditions`}
-              style={{ height: 86 }}
-            />
-          ) : (
-            <Skeleton style={{ width: 86, height: 86 }} />
-          )}
-          <div>
-            <p style={{ margin: 0 }}>{textDescription || <Skeleton />}</p>
-            <p style={{ fontSize: '2em', fontWeight: 'bold', margin: 0 }}>
-              {temperature.value !== null ? (
-                `${celsiusToFahrenheit(temperature.value)}ºF`
-              ) : (
-                <Skeleton />
-              )}
-            </p>
-          </div>
+        <TempAndDescription
+          data={{
+            icon: condition.icon,
+            text: condition.text,
+            temp: round(temp_f),
+            tempC: round(temp_c),
+            feelsLikeTemp: round(feelslike_f),
+            feelsLikeTempC: round(feelslike_c),
+          }}
+        />
+
+        <div>
+          <ul
+            style={{
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+              lineHeight: '1.3em',
+            }}
+          >
+            <li>
+              <span style={{ fontWeight: 'bold' }}>Humidity:</span> {humidity}%
+            </li>
+
+            <li>
+              <span style={{ fontWeight: 'bold' }}>Visibility:</span>{' '}
+              {vis_miles} miles
+            </li>
+            <li>
+              <span style={{ fontWeight: 'bold' }}>Current Wind:</span>{' '}
+              {wind_mph} mph
+            </li>
+            <li>
+              <span style={{ fontWeight: 'bold' }}>Wind Direction:</span>{' '}
+              {wind_dir}
+            </li>
+          </ul>
         </div>
         <div>
           <ul
@@ -77,26 +104,34 @@ const Details = () => {
             }}
           >
             <li>
-              <span style={{ fontWeight: 'bold' }}>Humidity:</span>{' '}
-              {Math.round(relativeHumidity.value)}%
+              <span style={{ fontWeight: 'bold' }}>Wind Gust:</span> {gust_mph}{' '}
+              mph
+            </li>
+
+            <li>
+              <span style={{ fontWeight: 'bold' }}>UV Index:</span> {uv}
             </li>
             <li>
-              <span style={{ fontWeight: 'bold' }}>Wind Chill:</span>{' '}
-              {Math.round(celsiusToFahrenheit(windChill.value))}ºF
-            </li>
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Visibility:</span>{' '}
-              {visibility.value}m
-            </li>
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Dewpoint:</span>{' '}
-              {Math.round(celsiusToFahrenheit(dewpoint.value))}ºF
+              <span style={{ fontWeight: 'bold' }}>Precipitation:</span>{' '}
+              {precip_in} in
             </li>
           </ul>
         </div>
         <div>
           <Link to='/'>Return to Dashboard</Link>
         </div>
+      </div>
+      <ForecastDetails data={localData} />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          textAlign: 'center',
+          fontSize: '0.8em',
+        }}
+      >
+        Last Updated: {last_updated}
       </div>
     </div>
   );
