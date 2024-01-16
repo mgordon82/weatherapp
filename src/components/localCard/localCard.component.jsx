@@ -1,17 +1,20 @@
+import round from '../../utils/round';
 import './localCard.styles.css';
-import celsiusToFahrenheit from '../../utils/celsiusToFahrenheit';
 
 const LocalCard = ({ localForecast }) => {
-  const { icon, textDescription, temperature } = localForecast;
+  const { location } = localForecast;
+  const { condition, temp_f, temp_c } = localForecast.current;
   return (
     <div className='local-card'>
-      <img src={icon} alt='Lakeville weather' />
+      <img
+        src={condition.icon}
+        alt={`${location.name} weather is currently ${condition.text}`}
+      />
       <div>
-        <h2>Weather in Lakeville</h2>
+        <h2>{location.name} Weather</h2>
 
         <p>
-          {textDescription} {celsiusToFahrenheit(temperature.value)}ºF (
-          {temperature.value}
+          {condition.text} {round(temp_f)}ºF ({round(temp_c)}
           ºC)
         </p>
       </div>
