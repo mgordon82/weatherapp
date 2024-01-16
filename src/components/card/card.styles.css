@@ -3,10 +3,22 @@
   padding: 10px 15px;
   border-radius: 5px;
   width: 200px;
-  flex: flex;
-  &:hover {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+  column-gap: 10px;
+  &.locations-card:hover {
     background-color: #06573b;
     color: #fff;
     cursor: pointer;
+  }
+  &.forecast-card {
+    font-size: 0.9em;
+  }
+  img {
+    width: 50;
+    height: 50;
+    display: inline-block;
   }
 }
