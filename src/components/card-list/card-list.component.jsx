@@ -11,8 +11,8 @@ const CardList = ({ data }) => {
         gap: 15,
       }}
     >
-      {data.map((station, key) => {
-        return <Card data={station} key={key} />;
+      {data.map((location, key) => {
+        return <Card data={location} key={key} />;
       })}
     </div>
   );
