@@ -124,11 +124,10 @@ const Details = () => {
       <ForecastDetails data={localData} />
       <div
         style={{
-          position: 'absolute',
-          bottom: 0,
           width: '100%',
           textAlign: 'center',
           fontSize: '0.8em',
+          marginTop: 15,
         }}
       >
         Last Updated: {last_updated}
