@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
+
 import App from './App';
 
-test('renders weather stations header', () => {
+test('loading screen test', () => {
   render(<App />);
-  const headerText = screen.getByText(/weather stations in minnesota/i);
-  expect(headerText).toBeInTheDocument();
+  const headerText = screen.getByText(/loading weather data/i);
+  return expect(headerText).toBeInTheDocument();
 });
