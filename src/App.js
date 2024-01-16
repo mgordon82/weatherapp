@@ -4,31 +4,44 @@ import './App.css';
 import CardList from './components/card-list/card-list.component';
 import Details from './routes/detail-route';
 import Header from './components/header/header.component';
+import fetchData from './requests/request';
+import locations from './utils/locations.json';
 
 function App() {
-  const [stations, setStations] = useState([]);
-  const [localForecast, setLocalForecast] = useState({
-    temperature: 0,
-    windChill: 0,
-  });
+  const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
-    fetch('https://api.weather.gov/stations?state=MN')
-      .then((response) => response.json())
-      .then((stations) => setStations(stations.features));
-    fetch('https://api.weather.gov/zones/forecast/MNZ068/observations')
-      .then((response) => response.json())
-      .then((forecast) => setLocalForecast(forecast.features[0].properties));
+    const fetchAndSetData = async () => {
+      try {
+        const result = await fetchData(
+          'current.json',
+          'POST',
+          locations,
+          'bulk'
+        );
+        setWeatherData(result.bulk);
+      } catch (error) {
+        console.log('there was an error', error);
+      }
+    };
+
+    fetchAndSetData();
   }, []);
 
   return (
     <Router>
       <div className='App'>
-        <Header localForecast={localForecast} />
-        <Routes>
-          <Route path='/' element={<CardList data={stations} />} />
-          <Route path='/details' element={<Details />} />
-        </Routes>
+        {weatherData ? (
+          <>
+            <Header localForecast={weatherData[1].query} />
+            <Routes>
+              <Route path='/' element={<CardList data={weatherData} />} />
+              <Route path='/details' element={<Details />} />
+            </Routes>
+          </>
+        ) : (
+          <p>Loading Weather Data</p>
+        )}
       </div>
     </Router>
   );
