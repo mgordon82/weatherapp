@@ -49,6 +49,7 @@ const ForecastDetails = ({ data }) => {
           display: 'flex',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
+          gap: 15,
         }}
       >
         {forecastData
