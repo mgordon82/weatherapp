@@ -3,9 +3,14 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import TempAndDescription from '../components/locationDetails/tempAndDescription.component';
 import round from '../utils/round';
 import ForecastDetails from '../components/forecast/forecast.component';
+import { formatDateWithTime } from '../utils/dateToDay';
+import { CurrentConditions } from '../components/current-conditions/currentConditions.component';
+import useDeviceType from '../custom-hooks/useDeviceType';
+import { LocalConditions } from '../components/local-conditions/conditions.component';
 
 const Details = () => {
   const location = useLocation();
+  const isMobile = useDeviceType();
   const localData = location.state.data.query;
   const { name, region, localtime, tz_id } = localData.location;
   const {
@@ -24,36 +29,35 @@ const Details = () => {
     uv,
   } = localData.current;
 
+  const conditionsArr = [
+    { name: 'Humidity', value: `${humidity}%` },
+    { name: 'Visibility', value: `${vis_miles} miles` },
+    { name: 'Current Wind', value: `${wind_mph} mph` },
+    { name: 'Wind Direction', value: `${wind_dir}` },
+    { name: 'Wind Gust', value: `${gust_mph} mph` },
+    { name: 'UV Index', value: `${uv}` },
+    { name: 'Precipitation', value: `${precip_in} in` },
+  ];
+
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'top',
-          padding: '15px 0',
-        }}
-      >
-        <h2 style={{ margin: 0 }}>
-          <p style={{ fontWeight: 'normal', fontSize: '0.7em', margin: 0 }}>
-            Current Conditions in:
-          </p>{' '}
-          {name}, {region}
-        </h2>
-        <div style={{ fontSize: '0.9em' }}>
-          <p style={{ margin: 0 }}>Local Time: {localtime}</p>
-          <p style={{ margin: 0 }}>Timezone: {tz_id}</p>
-        </div>
-      </div>
+      <CurrentConditions
+        name={name}
+        region={region}
+        localtime={localtime}
+        tz_id={tz_id}
+      />
 
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'left',
+          alignItems: 'top',
           flexWrap: 'wrap',
           border: '1px solid #ccc',
           borderRadius: 5,
           padding: '15px 10px',
+          maxHeight: isMobile ? 'auto' : 100,
         }}
       >
         <TempAndDescription
@@ -66,60 +70,14 @@ const Details = () => {
             feelsLikeTempC: round(feelslike_c),
           }}
         />
+        <LocalConditions conditionsArr={conditionsArr} />
 
-        <div>
-          <ul
-            style={{
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-              lineHeight: '1.3em',
-            }}
-          >
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Humidity:</span> {humidity}%
-            </li>
-
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Visibility:</span>{' '}
-              {vis_miles} miles
-            </li>
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Current Wind:</span>{' '}
-              {wind_mph} mph
-            </li>
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Wind Direction:</span>{' '}
-              {wind_dir}
-            </li>
-          </ul>
-        </div>
-        <div>
-          <ul
-            style={{
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-              lineHeight: '1.3em',
-            }}
-          >
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Wind Gust:</span> {gust_mph}{' '}
-              mph
-            </li>
-
-            <li>
-              <span style={{ fontWeight: 'bold' }}>UV Index:</span> {uv}
-            </li>
-            <li>
-              <span style={{ fontWeight: 'bold' }}>Precipitation:</span>{' '}
-              {precip_in} in
-            </li>
-          </ul>
-        </div>
-        <div>
-          <Link to='/'>Return to Dashboard</Link>
-        </div>
+        <Link
+          style={{ flexGrow: 8, textAlign: isMobile ? 'left' : 'right' }}
+          to='/'
+        >
+          Return to Dashboard
+        </Link>
       </div>
       <ForecastDetails data={localData} />
       <div
@@ -130,7 +88,7 @@ const Details = () => {
           marginTop: 15,
         }}
       >
-        Last Updated: {last_updated}
+        Last Updated: {formatDateWithTime(last_updated)}
       </div>
     </div>
   );

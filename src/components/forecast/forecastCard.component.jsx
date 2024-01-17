@@ -1,10 +1,15 @@
+import useDeviceType from '../../custom-hooks/useDeviceType';
 import { formatDateWithDay } from '../../utils/dateToDay';
 import round from '../../utils/round';
 
-const ForecastCard = ({ name, data }) => {
+const ForecastCard = ({ data }) => {
+  const isMobile = useDeviceType();
   const { condition, maxtemp_f, maxtemp_c, mintemp_f, mintemp_c } = data.day;
   return (
-    <div className='card forecast-card'>
+    <div
+      className='card forecast-card'
+      style={{ width: isMobile ? '100%' : '200px' }}
+    >
       <h2
         style={{
           width: '100%',

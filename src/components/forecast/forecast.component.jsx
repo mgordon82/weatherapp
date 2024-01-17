@@ -6,6 +6,7 @@ import ForecastCard from './forecastCard.component';
 const ForecastDetails = ({ data }) => {
   const { name } = data.location.name;
   const [forecastData, setForecastData] = useState(null);
+  const forecastedDays = 7;
 
   useEffect(() => {
     const fetchAndSetData = async () => {
@@ -14,7 +15,7 @@ const ForecastDetails = ({ data }) => {
           'forecast.json',
           'POST',
           '',
-          `${data.q}&days=7`
+          `${data.q}&days=${forecastedDays}`
         );
         setForecastData(result.forecast);
       } catch (error) {
@@ -56,7 +57,7 @@ const ForecastDetails = ({ data }) => {
           ? forecastData.forecastday.map((day, key) => {
               return <ForecastCard key={key} name={name} data={day} />;
             })
-          : [...Array(7)].map((_, key) => (
+          : [...Array(forecastedDays)].map((_, key) => (
               <Skeleton key={key} style={{ width: 232, height: 107 }} />
             ))}
       </div>
