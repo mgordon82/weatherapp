@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import 'react-loading-skeleton/dist/skeleton.css';
+import './detail-route.css';
 import TempAndDescription from '../components/locationDetails/tempAndDescription.component';
 import round from '../utils/round';
 import ForecastDetails from '../components/forecast/forecast.component';
@@ -19,6 +20,7 @@ const Details = () => {
     feelslike_c,
     gust_mph,
     humidity,
+    is_day,
     last_updated,
     precip_in,
     temp_f,
@@ -59,6 +61,10 @@ const Details = () => {
           padding: '15px 10px',
           maxHeight: isMobile ? 'auto' : 100,
         }}
+        className={`current ${condition.text
+          .split(' ')
+          .join('')
+          .toLowerCase()} ${!is_day && 'night'}`}
       >
         <TempAndDescription
           data={{

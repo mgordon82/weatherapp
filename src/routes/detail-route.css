@@ -1,0 +1,83 @@
+.current {
+  &.sunny {
+    background: rgb(162, 156, 250);
+    background: linear-gradient(
+      270deg,
+      rgba(162, 156, 250, 0.7721463585434174) 0%,
+      rgba(0, 212, 255, 1) 76%
+    );
+
+    a {
+      color: #333;
+    }
+  }
+  &.partlycloudy {
+    background: rgb(59, 51, 184);
+    background: linear-gradient(
+      270deg,
+      rgba(59, 51, 184, 0.7721463585434174) 0%,
+      rgba(0, 212, 255, 1) 76%
+    );
+
+    a {
+      color: #fff;
+    }
+  }
+  &.overcast {
+    background: rgb(93, 93, 93);
+    background: linear-gradient(
+      270deg,
+      rgba(93, 93, 93, 0.7721463585434174) 0%,
+      rgba(230, 230, 230, 1) 76%
+    );
+
+    a {
+      color: #fff;
+    }
+  }
+  &.cloudy {
+    background: rgb(93, 93, 93);
+    background: linear-gradient(
+      270deg,
+      rgba(93, 93, 93, 0.7721463585434174) 0%,
+      rgba(230, 230, 230, 1) 76%
+    );
+
+    a {
+      color: #fff;
+    }
+  }
+  &.lightrain {
+    background: rgb(93, 93, 93);
+    background: linear-gradient(
+      270deg,
+      rgba(93, 93, 93, 0.7721463585434174) 0%,
+      rgba(230, 230, 230, 1) 76%
+    );
+
+    a {
+      color: #fff;
+    }
+  }
+  &.heavyrain {
+    background: rgb(93, 93, 93);
+    background: linear-gradient(
+      270deg,
+      rgba(93, 93, 93, 0.7721463585434174) 0%,
+      rgba(159, 159, 159, 1) 76%
+    );
+
+    a {
+      color: #fff;
+    }
+  }
+  &.night {
+    color: #fff;
+    background: rgb(162, 156, 250) !important;
+    background: linear-gradient(
+      90deg,
+      rgba(162, 156, 250, 0.7721463585434174) 0%,
+      rgba(24, 0, 70, 1) 76%
+    ) !important;
+  }
+}
